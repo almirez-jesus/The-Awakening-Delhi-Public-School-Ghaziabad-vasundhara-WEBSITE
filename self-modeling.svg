@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title-desc">
+  <title>Self-Modeling illustration</title>
+  <desc>Abstract self-modeling illustration with mirrored shapes.</desc>
+  <rect width="1200" height="800" fill="#08101f" />
+  <ellipse cx="420" cy="440" rx="160" ry="100" fill="rgba(115,247,255,0.12)" />
+  <ellipse cx="780" cy="360" rx="140" ry="90" fill="rgba(255,125,195,0.14)" />
+  <path d="M360 310 C420 200 540 200 620 310" stroke="#73f7ff" stroke-width="18" fill="none" />
+  <path d="M520 520 C600 620 720 620 780 520" stroke="#8d6bff" stroke-width="18" fill="none" />
+  <circle cx="600" cy="370" r="28" fill="#fff" opacity="0.85" />
+</svg>

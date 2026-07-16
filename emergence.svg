@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title-desc">
+  <title>Emergence illustration</title>
+  <desc>Abstract emergence illustration with rising clusters.</desc>
+  <rect width="1200" height="800" fill="#08101f" />
+  <circle cx="300" cy="420" r="110" fill="rgba(115,247,255,0.1)" />
+  <circle cx="520" cy="340" r="130" fill="rgba(255,125,195,0.13)" />
+  <circle cx="760" cy="500" r="90" fill="rgba(141,107,255,0.12)" />
+  <path d="M180 620 C340 500 520 590 700 470 S980 380 1080 500" stroke="#73f7ff" stroke-width="20" fill="none" stroke-linecap="round" />
+  <circle cx="580" cy="290" r="20" fill="#fff" opacity="0.85" />
+</svg>

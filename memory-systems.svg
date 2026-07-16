@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title-desc">
+  <title>Memory Systems illustration</title>
+  <desc>Abstract memory systems illustration with connected nodes.</desc>
+  <rect width="1200" height="800" fill="#08101f" />
+  <rect x="200" y="220" width="220" height="220" rx="32" fill="rgba(115,247,255,0.12)" />
+  <rect x="520" y="300" width="260" height="180" rx="28" fill="rgba(255,125,195,0.14)" />
+  <circle cx="880" cy="330" r="98" fill="rgba(141,107,255,0.12)" />
+  <path d="M320 330 L560 390 L780 350" stroke="#73f7ff" stroke-width="16" fill="none" stroke-linecap="round" />
+  <circle cx="300" cy="240" r="18" fill="#fff" opacity="0.85" />
+</svg>

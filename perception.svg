@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title-desc">
+  <title>Perception illustration</title>
+  <desc>Abstract perception illustration with layered rings.</desc>
+  <rect width="1200" height="800" fill="#08101f" />
+  <circle cx="600" cy="320" r="220" fill="rgba(115,247,255,0.12)" />
+  <circle cx="600" cy="320" r="140" fill="rgba(255,125,195,0.1)" />
+  <circle cx="600" cy="320" r="70" fill="#73f7ff" opacity="0.65" />
+  <path d="M180 640 C330 520 470 590 620 470 S820 380 980 520" stroke="#8d6bff" stroke-width="20" fill="none" stroke-linecap="round" />
+  <circle cx="320" cy="540" r="16" fill="#fff" opacity="0.8" />
+</svg>
