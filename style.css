@@ -365,11 +365,13 @@ section { position: relative; }
 }
 .topic-image {
   width: 100%;
-  height: auto;
+  height: 320px;
+  object-fit: cover;
   border-radius: 1.15rem;
   box-shadow: 0 28px 60px rgba(2, 6, 16, 0.25);
   border: 1px solid rgba(255,255,255,0.08);
   display: block;
+  background: linear-gradient(135deg, rgba(115,247,255,0.16), rgba(255,125,195,0.16));
 }
 .glass-surface { background: linear-gradient(140deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04)); backdrop-filter: blur(20px); }
 
