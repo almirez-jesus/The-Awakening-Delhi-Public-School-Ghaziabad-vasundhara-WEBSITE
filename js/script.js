@@ -7,11 +7,11 @@ const canvas = document.querySelector('.neural-canvas');
 const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
 const toggleTheme = document.querySelector('.theme-toggle');
 const heroTyping = document.querySelector('.typing');
-const reveals = Array.from(document.querySelectorAll('.reveal'));
 const counters = Array.from(document.querySelectorAll('[data-counter]'));
 const faqItems = Array.from(document.querySelectorAll('.faq-item'));
 const form = document.querySelector('.contact-form');
 const progressLabel = document.querySelector('.reading-progress');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const themeState = localStorage.getItem('awakening-theme') || 'dark';
 body.classList.toggle('light', themeState === 'light');
@@ -82,16 +82,128 @@ function initTyping() {
   type();
 }
 
-function initReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
+function collectRevealTargets() {
+  const selectors = [
+    'main > section',
+    'main article',
+    'main .panel',
+    'main .hero-card',
+    'main .hero-copy',
+    'main .hero-visual',
+    'main .topic-card',
+    'main .topic-image',
+    'main .metric-card',
+    'main .timeline-item',
+    'main .research-card',
+    'main .flow-card',
+    'main .gallery-item',
+    'main .quote-block',
+    'main .stacked-list article',
+    'main .faq-item',
+    'main .contact-form',
+    'main .footer',
+    '.signal-panel',
+    '.signal-viewport',
+    '.signal-badge',
+    '.section-heading',
+    '.hero-actions .btn',
+    '.hero-actions a',
+    'main img',
+  ];
+
+  const targets = [];
+  const seen = new Set();
+
+  selectors.forEach((selector) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      if (element.closest('.loader, .progress-bar, .cursor-glow, .neural-canvas, .noise-layer, .sticky-nav, .nav-shell, .nav-links, .nav-actions, .brand, .brand-mark')) return;
+      if (element.closest('.no-reveal')) return;
+      if (!element.classList.contains('reveal')) {
+        element.classList.add('reveal');
+      }
+      if (!seen.has(element)) {
+        seen.add(element);
+        targets.push(element);
       }
     });
-  }, { threshold: 0.18 });
-  reveals.forEach((item) => observer.observe(item));
+  });
+
+  return targets;
+}
+
+function initReveal() {
+  const revealTargets = collectRevealTargets();
+  if (!revealTargets.length) return;
+
+  if (prefersReducedMotion) {
+    revealTargets.forEach((item) => item.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const target = entry.target;
+      if (entry.isIntersecting) {
+        target.classList.add('is-visible');
+      } else {
+        target.classList.remove('is-visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+  revealTargets.forEach((item, index) => {
+    item.dataset.revealOrder = String(index);
+    const parent = item.parentElement;
+    const parentIndex = parent && parent.children ? Array.from(parent.children).indexOf(item) : 0;
+    item.style.setProperty('--reveal-delay', `${Math.min(index * 70 + parentIndex * 20, 360)}ms`);
+    observer.observe(item);
+  });
+}
+
+function initParallax() {
+  if (prefersReducedMotion) return;
+
+  const parallaxTargets = Array.from(document.querySelectorAll('[data-parallax], .parallax, .hero-card, .hero-visual, .panel, .topic-image, .quote-block, .gallery-item, .signal-panel, .signal-viewport, .topic-card, .metric-card, .research-card, .flow-card, .footer')).filter((element) => !element.closest('.sticky-nav'));
+  if (!parallaxTargets.length) return;
+
+  const isMobile = window.matchMedia('(max-width: 760px)').matches;
+  let frameId = 0;
+
+  const updateParallax = () => {
+    frameId = 0;
+    const scrollY = window.scrollY;
+    const viewportHeight = window.innerHeight;
+
+    parallaxTargets.forEach((element) => {
+      const rect = element.getBoundingClientRect();
+      if (rect.bottom < -80 || rect.top > viewportHeight + 80) return;
+
+      const depth = Number(element.dataset.parallaxDepth || (
+        element.classList.contains('hero-visual') ? 0.18 :
+        element.classList.contains('hero-card') ? 0.12 :
+        element.classList.contains('topic-image') ? 0.2 :
+        element.classList.contains('quote-block') ? 0.1 :
+        element.classList.contains('signal-viewport') || element.classList.contains('signal-panel') ? 0.12 :
+        element.classList.contains('gallery-item') ? 0.08 :
+        0.06
+      ));
+      const intensity = isMobile ? depth * 0.55 : depth;
+      const offsetY = ((scrollY + viewportHeight - rect.top) * intensity) * 0.05;
+      const offsetX = Math.min(10, Math.max(-10, (Math.sin((scrollY + rect.top) / 420) * 4) * intensity));
+
+      element.style.setProperty('--parallax-x', `${offsetX}px`);
+      element.style.setProperty('--parallax-y', `${offsetY}px`);
+    });
+  };
+
+  const requestUpdate = () => {
+    if (frameId) return;
+    frameId = requestAnimationFrame(updateParallax);
+  };
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
+  requestUpdate();
 }
 
 function initCounters() {
@@ -232,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCursorGlow();
   initTyping();
   initReveal();
+  initParallax();
   initCounters();
   initFaq();
   validateForm();
